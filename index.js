@@ -1,5 +1,3 @@
-const url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
-
 const removeExtraSpaces = string => string.trim().replace(/\s{2,}/g, "");
 
 const Validator = class Validator {
@@ -7,6 +5,7 @@ const Validator = class Validator {
     this.USER_ID = config.addressUserId;
   }
   address(address) {
+    let url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
     return new Promise((resolve, reject) => {
       if (!this.USER_ID) reject({
         error: 'Did not set your USER ID'
