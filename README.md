@@ -14,7 +14,9 @@ First you need to register for an API key / User ID [here](https://www.usps.com/
 Once you have your User ID, you need to instantiate the Validator via the following:
 
 ```javascript
-const validate = new Validator('YOUR USER ID HERE');
+const validate = new Validator({
+  addressUserId: 'YOUR USER ID HERE'
+});
 ```
 
 Now going forward you can use run the method to validate an address like the following:

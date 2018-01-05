@@ -3,8 +3,8 @@ const url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
 const removeExtraSpaces = string => string.trim().replace(/\s{2,}/g, "");
 
 const Validator = class Validator {
-  constructor(USER_ID) {
-    this.USER_ID = USER_ID;
+  constructor(config) {
+    this.USER_ID = config.addressUserId;
   }
   address(address) {
     return new Promise((resolve, reject) => {
