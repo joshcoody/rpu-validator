@@ -59,3 +59,6 @@ typings/
 
 # Hidden OS Files
 .DS_Store
+
+# Sensitive Data
+config.json

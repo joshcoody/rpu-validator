@@ -1,55 +1,64 @@
+const isBrowser = () => { try { return this === window; } catch(e) { return false; } };
+
+var commonFetch = null;
+
+if (!isBrowser()) {
+  commonFetch = require('node-fetch-polyfill');
+} else {
+  commonFetch = window.fetch;
+}
+
 const removeExtraSpaces = string => string.trim().replace(/\s{2,}/g, "");
 
-const Validator = class Validator {
-  constructor(config) {
-    this.USER_ID = config.addressUserId;
-  }
-  address(address) {
-    let url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
-    return new Promise((resolve, reject) => {
-      if (!this.USER_ID) reject({
-        error: 'Did not set your USER ID'
-      });
-      let xml = `
-        <AddressValidateRequest USERID="${this.USER_ID}">
-          <Revision>1</Revision>
-          <Address ID="0">
-            <Address1></Address1>
-            <Address2>${address.street}</Address2>
-            <City>${address.city}</City>
-            <State>${address.state}</State>
-            <Zip5>${address.zip}</Zip5>
-            <Zip4></Zip4>
-          </Address>
-        </AddressValidateRequest>
-      `;
+const xmlTagSelector = (xml, tag) => {
+  let result = xml.match(new RegExp(`<${tag}>(.*)</${tag}>`));
+  return result ? result[1] : false;
+}
 
-      fetch(url + removeExtraSpaces(xml))
-        .then(response => response.text())
-        .then(data => {
-          let parser = new DOMParser();
-          let xmlDoc = parser.parseFromString(data, "text/xml");
-          if (xmlDoc.querySelector('Error')) {
-            reject({
-              error: xmlDoc.querySelector('Description').innerHTML.trim()
-            });
-          } else {
-            return {
-              street: xmlDoc.querySelector('Address2').innerHTML.trim(),
-              city: xmlDoc.querySelector('City').innerHTML.trim(),
-              state: xmlDoc.querySelector('State').innerHTML.trim(),
-              zip: xmlDoc.querySelector('Zip5').innerHTML.trim()
-            };
-          }
-        })
-        .then(address => {
-          resolve(address);
-        })
-        .catch(error => {
-          reject({
-            error: error
-          });
-        });
+const address = (USER_ID, address) => {
+  let url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
+  return new Promise((resolve, reject) => {
+    if (!USER_ID) reject({
+      error: 'Did not set your USER ID'
     });
-  }
+    let xml = `
+      <AddressValidateRequest USERID="${USER_ID}">
+        <Revision>1</Revision>
+        <Address ID="0">
+          <Address1></Address1>
+          <Address2>${address.street}</Address2>
+          <City>${address.city}</City>
+          <State>${address.state}</State>
+          <Zip5>${address.zip}</Zip5>
+          <Zip4></Zip4>
+        </Address>
+      </AddressValidateRequest>
+    `;
+
+    commonFetch(url + removeExtraSpaces(xml))
+      .then(response => response.text())
+      .then(data => {
+        if (xmlTagSelector(data, 'Error')) {
+          reject({
+            error: xmlTagSelector(data, 'Description').trim()
+          });
+        } else {
+          resolve({
+            street: xmlTagSelector(data, 'Address2').trim(),
+            city: xmlTagSelector(data, 'City').trim(),
+            state: xmlTagSelector(data, 'State').trim(),
+            zip: xmlTagSelector(data, 'Zip5').trim()
+          });
+        }
+      })
+      .catch(error => {
+        reject({
+          error: error
+        });
+      });
+  });
+};
+
+if (!isBrowser()) {
+  module.exports.address = address;
 }

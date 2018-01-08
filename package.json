@@ -1,0 +1,28 @@
+{
+  "name": "validator",
+  "version": "1.0.0",
+  "description": "Simple Promise based API to validate different tasks.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshcoody/validator.git"
+  },
+  "keywords": [
+    "validation"
+  ],
+  "author": "Josh Coody",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshcoody/validator/issues"
+  },
+  "homepage": "https://github.com/joshcoody/validator#readme",
+  "dependencies": {
+    "node-fetch-polyfill": "^2.0.6"
+  },
+  "devDependencies": {
+    "jest": "^22.0.4"
+  }
+}
