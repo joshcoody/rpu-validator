@@ -9,20 +9,16 @@ Simple Promise based API to validate different tasks.
 
 ### How to Setup:
 
-First you need to register for an API key / User ID [here](https://www.usps.com/business/web-tools-apis/welcome.htm).
-
-Once you have your User ID, you need to instantiate the Validator via the following:
+Just include the following in your project:
 
 ```javascript
-const validate = new Validator({
-  addressUserId: 'YOUR USER ID HERE'
-});
+const validate = require('rpu-validator');
 ```
 
 Now going forward you can use run the method to validate an address like the following:
 
 ```javascript
-validate.address({
+validate.address("YOUR USER ID HERE", {
   street: "350 5th Ave",
   zip: "10118"
 })
@@ -34,10 +30,12 @@ validate.address({
 
 For US based addresses via USPS API.
 
-You run the following to validate a basic address:
+First you need to register for an API key / User ID [here](https://www.usps.com/business/web-tools-apis/welcome.htm).
+
+Once you have your User ID, you need to instantiate the Validator via the following:
 
 ```javascript
-validate.address({
+validate.address("YOUR USER ID HERE", {
   street: "350 5th Ave",
   zip: "10118"
 })
@@ -61,7 +59,7 @@ The result of the above should return this:
 You can catch any errors, like the following:
 
 ```javascript
-validate.address({
+validate.address("YOUR USER ID HERE", {
   street: "350 5th Ave",
   zip: "33333"
 })

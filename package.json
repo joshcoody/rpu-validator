@@ -1,6 +1,6 @@
 {
-  "name": "validator",
-  "version": "1.0.0",
+  "name": "rpu-validator",
+  "version": "1.0.1",
   "description": "Simple Promise based API to validate different tasks.",
   "main": "index.js",
   "scripts": {
