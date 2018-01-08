@@ -15,15 +15,6 @@ Just include the following in your project:
 const validate = require('rpu-validator');
 ```
 
-Now going forward you can use run the method to validate an address like the following:
-
-```javascript
-validate.address("YOUR USER ID HERE", {
-  street: "350 5th Ave",
-  zip: "10118"
-})
-```
-
 ### How to Use:
 
 #### Address Validator
