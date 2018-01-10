@@ -1,12 +1,6 @@
 const isBrowser = () => { try { return this === window; } catch(e) { return false; } };
 
-var commonFetch = null;
-
-if (!isBrowser()) {
-  commonFetch = require('node-fetch-polyfill');
-} else {
-  commonFetch = window.fetch;
-}
+const axios = require('axios');
 
 const removeExtraSpaces = string => string.trim().replace(/\s{2,}/g, "");
 
@@ -35,8 +29,8 @@ const address = (USER_ID, address) => {
       </AddressValidateRequest>
     `;
 
-    commonFetch(url + removeExtraSpaces(xml))
-      .then(response => response.text())
+    axios.get(url + removeExtraSpaces(xml))
+      .then(response => response.data)
       .then(data => {
         if (xmlTagSelector(data, 'Error')) {
           reject({
