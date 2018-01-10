@@ -67,3 +67,14 @@ You'll get back an error like this:
   error: "Invalid Zip Code."
 }
 ```
+
+If your process supports it, you can use ES6 imports like the following:
+
+```javascript
+import { address } from 'rpu-validator';
+
+address("YOUR USER ID HERE", {
+  street: "350 5th Ave",
+  zip: "10118"
+})
+```
