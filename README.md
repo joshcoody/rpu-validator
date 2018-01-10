@@ -6,7 +6,7 @@ Simple Promise based API to validate different tasks.
   * [How to Setup](#how-to-setup)
   * [How to Use](#how-to-use)
     * [Address Validator](#address-validator)
-    * [City/State Lookup](#city-state-lookup)
+    * [City/State Lookup](#citystate-lookup)
 
 ### How to Setup:
 
