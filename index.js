@@ -1,5 +1,3 @@
-const isBrowser = () => { try { return this === window; } catch(e) { return false; } };
-
 const axios = require('axios');
 
 const removeExtraSpaces = string => string.trim().replace(/\s{2,}/g, "");
@@ -53,6 +51,4 @@ const address = (USER_ID, address) => {
   });
 };
 
-if (!isBrowser()) {
-  module.exports.address = address;
-}
+module.exports.address = address;
