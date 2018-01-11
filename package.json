@@ -1,6 +1,6 @@
 {
   "name": "rpu-validator",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Simple Promise based API to validate different tasks.",
   "main": "index.js",
   "scripts": {
@@ -13,9 +13,13 @@
   },
   "keywords": [
     "validation",
+    "validator",
     "address validator",
     "zip validator",
-    "city state lookup"
+    "city lookup",
+    "state lookup",
+    "city state lookup",
+    "usps"
   ],
   "author": "Josh Coody",
   "license": "MIT",
