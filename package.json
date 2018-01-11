@@ -12,7 +12,10 @@
     "url": "git+https://github.com/joshcoody/validator.git"
   },
   "keywords": [
-    "validation"
+    "validation",
+    "address validator",
+    "zip validator",
+    "city state lookup"
   ],
   "author": "Josh Coody",
   "license": "MIT",
