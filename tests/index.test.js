@@ -1,5 +1,5 @@
 const config = require('./config.json');
-const validate = require('./index');
+const validate = require('../source/index');
 
 describe('Address Validator', () => {
   it('Checks an address', () => {

@@ -1,88 +1,69 @@
-const axios = require('axios');
+'use strict';
 
-const removeExtraSpaces = string => string.trim().replace(/\s{2,}/g, "");
+var axios = require('axios');
 
-const xmlTagSelector = (xml, tag) => {
-  let result = xml.match(new RegExp(`<${tag}>(.*)</${tag}>`));
+var removeExtraSpaces = function removeExtraSpaces(string) {
+  return string.trim().replace(/\s{2,}/g, "");
+};
+
+var xmlTagSelector = function xmlTagSelector(xml, tag) {
+  var result = xml.match(new RegExp('<' + tag + '>(.*)</' + tag + '>'));
   return result ? result[1] : false;
-}
+};
 
-const sendUSPSRequest = (USER_ID, url, xml) => {
-  return new Promise((resolve, reject) => {
+var sendUSPSRequest = function sendUSPSRequest(USER_ID, url, xml) {
+  return new Promise(function (resolve, reject) {
     if (!USER_ID) reject({
       error: 'Did not set your USER ID'
     });
-    axios.get(url + removeExtraSpaces(xml))
-      .then(response => response.data)
-      .then(data => {
-        if (xmlTagSelector(data, 'Error')) {
-          reject({
-            error: xmlTagSelector(data, 'Description').trim()
-          });
-        } else {
-          let result = {};
-          if (xmlTagSelector(data, 'Address2')) result.street = xmlTagSelector(data, 'Address2').trim();
-          if (xmlTagSelector(data, 'City')) result.city = xmlTagSelector(data, 'City').trim();
-          if (xmlTagSelector(data, 'State')) result.state = xmlTagSelector(data, 'State').trim();
-          if (xmlTagSelector(data, 'Zip5')) result.zip = xmlTagSelector(data, 'Zip5').trim();
-          resolve(result);
-        }
-      })
-      .catch(error => {
+    axios.get(url + removeExtraSpaces(xml)).then(function (response) {
+      return response.data;
+    }).then(function (data) {
+      if (xmlTagSelector(data, 'Error')) {
         reject({
-          error: error
+          error: xmlTagSelector(data, 'Description').trim()
         });
+      } else {
+        var result = {};
+        if (xmlTagSelector(data, 'Address2')) result.street = xmlTagSelector(data, 'Address2').trim();
+        if (xmlTagSelector(data, 'City')) result.city = xmlTagSelector(data, 'City').trim();
+        if (xmlTagSelector(data, 'State')) result.state = xmlTagSelector(data, 'State').trim();
+        if (xmlTagSelector(data, 'Zip5')) result.zip = xmlTagSelector(data, 'Zip5').trim();
+        resolve(result);
+      }
+    }).catch(function (error) {
+      reject({
+        error: error
       });
-  });
-}
-
-const address = (USER_ID, address) => {
-  let url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
-
-  let xml = `
-    <AddressValidateRequest USERID="${USER_ID}">
-      <Revision>1</Revision>
-      <Address ID="0">
-        <Address1></Address1>
-        <Address2>${address.street}</Address2>
-        <City>${address.city}</City>
-        <State>${address.state}</State>
-        <Zip5>${address.zip}</Zip5>
-        <Zip4></Zip4>
-      </Address>
-    </AddressValidateRequest>
-  `;
-
-  return new Promise((resolve, reject) => {
-    sendUSPSRequest(USER_ID, url, xml)
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
+    });
   });
 };
 
-const zip = (USER_ID, zip) => {
+var address = function address(USER_ID, _address) {
+  var url = "https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=";
+
+  var xml = '\n    <AddressValidateRequest USERID="' + USER_ID + '">\n      <Revision>1</Revision>\n      <Address ID="0">\n        <Address1></Address1>\n        <Address2>' + _address.street + '</Address2>\n        <City>' + _address.city + '</City>\n        <State>' + _address.state + '</State>\n        <Zip5>' + _address.zip + '</Zip5>\n        <Zip4></Zip4>\n      </Address>\n    </AddressValidateRequest>\n  ';
+
+  return new Promise(function (resolve, reject) {
+    sendUSPSRequest(USER_ID, url, xml).then(function (response) {
+      resolve(response);
+    }).catch(function (error) {
+      reject(error);
+    });
+  });
+};
+
+var zip = function zip(USER_ID, _zip) {
   var url = "https://secure.shippingapis.com/ShippingAPI.dll?API=CityStateLookup&XML=";
 
-  var xml = `
-    <CityStateLookupRequest USERID="${USER_ID}">
-      <ZipCode ID="0">
-        <Zip5>${zip}</Zip5>
-      </ZipCode>
-    </CityStateLookupRequest>
-  `;
+  var xml = '\n    <CityStateLookupRequest USERID="' + USER_ID + '">\n      <ZipCode ID="0">\n        <Zip5>' + _zip + '</Zip5>\n      </ZipCode>\n    </CityStateLookupRequest>\n  ';
 
-  return new Promise((resolve, reject) => {
-    sendUSPSRequest(USER_ID, url, xml)
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
+  return new Promise(function (resolve, reject) {
+    sendUSPSRequest(USER_ID, url, xml).then(function (response) {
+      resolve(response);
+    }).catch(function (error) {
+      reject(error);
+    });
   });
 };
 
